@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.pijamaGames</groupId>
-	<artifactId>neluBackend</artifactId>
+	<artifactId>gemFeverBackend</artifactId>
 	<version>1.0.0-BETA</version>
 	<name>neluBackend</name>
-	<description>Nelu Backend</description>
+	<description>GemFever Backend</description>
 
 	<properties>
 		<java.version>11</java.version>
