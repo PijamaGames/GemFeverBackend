@@ -1,9 +1,6 @@
 package com.gemFeverBackend;
 
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
-
-import org.springframework.scheduling.annotation.Scheduled;
+import Players.Player;
 
 public class Room {
 	
@@ -24,18 +21,18 @@ public class Room {
 		this.slaveHost = host;
 		this.lighting=lighting;
 		this.enviroment=enviroment;
-		this.slaveHost.setRoom(this);
+		/*this.slaveHost.setRoom(this);
 		this.slaveHost.setIsHost(true);
-		this.slaveHost.setIsClient(false);
+		this.slaveHost.setIsClient(false);*/
 		setPrivate(isPrivate);
 	}
 	
 	public void setPrivate(boolean isPrivate) {
 		this.isPrivate = isPrivate;
 		if(isPrivate) {
-			GameHandler.INSTANCE.removePublicRoom(this);
+			//GameHandler.INSTANCE.removePublicRoom(this);
 		} else {
-			GameHandler.INSTANCE.addPublicRoom(this);
+			//GameHandler.INSTANCE.addPublicRoom(this);
 		}
 	}
 	
@@ -78,9 +75,9 @@ public class Room {
 	public void setClient(Player client) {
 		masterClient = client;
 		if(client != null) {
-			masterClient.setIsClient(true);
+			/*masterClient.setIsClient(true);
 			masterClient.setIsHost(false);
-			masterClient.setRoom(this);
+			masterClient.setRoom(this);*/
 		}
 	}
 	
@@ -99,14 +96,14 @@ public class Room {
 		if(started) {
 			//task.cancel(true);
 			if(masterClient != null) {
-				masterClient.setIsClient(false);
+				/*masterClient.setIsClient(false);
 				masterClient.setIsHost(false);
-				masterClient.setRoom(null);
+				masterClient.setRoom(null);*/
 			}
 			if(slaveHost != null) {
-				slaveHost.setIsClient(false);
+				/*slaveHost.setIsClient(false);
 				slaveHost.setIsHost(false);
-				slaveHost.setRoom(null);
+				slaveHost.setRoom(null);*/
 			}
 			
 			masterClient = null;
@@ -116,8 +113,8 @@ public class Room {
 			Log("stopped");
 		}
 		
-		GameHandler.INSTANCE.removeRoom(this);
-		GameHandler.INSTANCE.removePublicRoom(this);
+		//GameHandler.INSTANCE.removeRoom(this);
+		//GameHandler.INSTANCE.removePublicRoom(this);
 	}
 	
 	/*public void Update() {

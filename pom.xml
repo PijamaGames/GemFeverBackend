@@ -11,7 +11,7 @@
 	<groupId>com.pijamaGames</groupId>
 	<artifactId>gemFeverBackend</artifactId>
 	<version>1.0.0-BETA</version>
-	<name>neluBackend</name>
+	<name>gemFeverBackend</name>
 	<description>GemFever Backend</description>
 
 	<properties>

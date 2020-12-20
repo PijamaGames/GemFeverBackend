@@ -1,10 +1,8 @@
-package com.gemFeverBackend.repository;
+package Users;
 
 import java.util.List;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
-
-import com.gemFeverBackend.model.User;
 
 public interface UserRepository extends MongoRepository<User, String> {
 	

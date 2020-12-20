@@ -1,7 +1,6 @@
 package com.gemFeverBackend;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -9,15 +8,12 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 import org.springframework.web.socket.config.annotation.EnableWebSocket;
 import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
 import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
-
-import com.gemFeverBackend.controller.UserController;
-import com.gemFeverBackend.model.User;
-import com.gemFeverBackend.repository.UserRepository;
-
+import Users.UserRepository;
 
 
 @SpringBootApplication
 @EnableWebSocket
+@EnableMongoRepositories(basePackageClasses = UserRepository.class)
 public class GemFeverBackendApplication implements WebSocketConfigurer {
 
 	@Autowired
@@ -36,5 +32,4 @@ public class GemFeverBackendApplication implements WebSocketConfigurer {
 	public WebSocketGameHandler gameHandler() {
 		return new WebSocketGameHandler();
 	}
-	
 }
