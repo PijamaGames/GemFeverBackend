@@ -9,6 +9,13 @@ public class PlayerState {
 	
 	protected Player player;
 	
+	protected final boolean DEBUG = true;
+	protected void log(String msg) {
+		if(DEBUG) {
+			System.out.println("[PLAYER "+player.playerId+"] " + msg);
+		}
+	}
+	
 	public PlayerState(Player player) {
 		this.player = player;
 	}

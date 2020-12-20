@@ -3,6 +3,8 @@ package Users;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import com.gemFeverBackend.GameHandler;
+
 @Document(collection="Users")
 public class User {
 	
@@ -63,6 +65,10 @@ public class User {
 		this.items_faces = items_faces;
 		this.items_hats = items_hats;
 		this.items_frames = items_frames;
+	}
+	
+	public void save() {
+		GameHandler.repo.save(this);
 	}
 	
 	public String getId() {

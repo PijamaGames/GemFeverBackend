@@ -21,6 +21,7 @@ public class GemFeverBackendApplication implements WebSocketConfigurer {
 	
 	public static void main(String[] args) {
 		SpringApplication.run(GemFeverBackendApplication.class, args);
+		
 	}
 	
 	@Override
@@ -29,7 +30,7 @@ public class GemFeverBackendApplication implements WebSocketConfigurer {
 	}
 	
 	@Bean
-	public WebSocketGameHandler gameHandler() {
-		return new WebSocketGameHandler();
+	public GameHandler gameHandler() {
+		return new GameHandler(repository);
 	}
 }

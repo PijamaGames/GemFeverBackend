@@ -9,8 +9,8 @@ public class PlayerSignedIn extends PlayerState {
 		super(player);
 	}
 
-	public enum FrontendEvents{};
-	public enum BackendEvents{};
+	private enum FrontendEvents{};
+	private enum BackendEvents{};
 	
 	public void handleMessage(JsonNode inMsg) {
 		/*BackendEvents event = BackendEvents.values()[(inMsg.get("event").asInt())];
@@ -21,7 +21,7 @@ public class PlayerSignedIn extends PlayerState {
 	}
 	
 	protected void begin() {
-		
+		log("state: signed in");
 	}
 	
 	protected void finish() {
