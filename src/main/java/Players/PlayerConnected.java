@@ -1,6 +1,7 @@
 package Players;
 
 import java.util.Optional;
+import java.util.Set;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -30,28 +31,35 @@ public class PlayerConnected extends PlayerState {
 	}
 	
 	private void signUp(JsonNode inMsg) {
-		
 		JsonNode userNode = inMsg.get("user");
 		if(userNode != null) {
-			User user = new User(
-					userNode.get("id").asText(),
-					userNode.get("password").asText(),
-					userNode.get("avatar_bodyType").asInt(),
-					userNode.get("avatar_skinTone").asInt(),
-					userNode.get("avatar_color").asInt(),
-					userNode.get("avatar_face").asInt(),
-					userNode.get("avatar_hat").asInt(),
-					userNode.get("avatar_frame").asInt()
-					);
-			player.user = user;
-			player.user.save();
-			
-			int event = FrontendEvents.SignedUp.ordinal();
+			String username = userNode.get("id").asText();
+			Optional<User> userOp = GameHandler.repo.findById(username);
+			int errorCode = -1;
+			int event;
+			if(userOp.isPresent()) {
+				errorCode = 3;
+				event = FrontendEvents.WrongData.ordinal();
+			} else {
+				User user = new User(
+						username,
+						userNode.get("password").asText(),
+						userNode.get("avatar_bodyType").asInt(),
+						userNode.get("avatar_skinTone").asInt(),
+						userNode.get("avatar_color").asInt(),
+						userNode.get("avatar_face").asInt(),
+						userNode.get("avatar_hat").asInt(),
+						userNode.get("avatar_frame").asInt()
+						);
+				player.setUser(user);
+				user.save();
+				event = FrontendEvents.SignedUp.ordinal();
+				player.setState(player.signedUpState);
+			}
 			ObjectNode outMsg = mapper.createObjectNode();
 			outMsg.put("evt", event);
+			outMsg.put("error", errorCode);
 			player.sendMessage(outMsg.toString());
-			
-			player.setState(player.signedUpState);
 		}
 	}
 	
@@ -60,19 +68,26 @@ public class PlayerConnected extends PlayerState {
 		String username = inMsg.get("username").asText();
 		String password = inMsg.get("password").asText();
 		
-		//TODO: Comprobar si los datos de usuarios son correctos
-		//Si no lo son, enviar wrong data
-		//ELSE:
 		ObjectNode outMsg = mapper.createObjectNode();
 		int event;
 		boolean wrongData = false;
+		/*
+		 * 0: Wrong password
+		 * 1: User does not exist
+		 * 2: User already in use
+		 */
 		int errorCode = -1;
 		Optional<User> userOp = GameHandler.repo.findById(username);
+		User user = null;
 		if(userOp.isPresent()) {
-			User user = userOp.get();
+			user = userOp.get();
 			if(!user.getPassword().equals(password)) {
 				wrongData = true;
 				errorCode = 0;
+			}
+			if(PlayerManager.usersInUse.containsKey(username)) {
+				wrongData = true;
+				errorCode = 2;
 			}
 		} else {
 			wrongData = true;
@@ -84,6 +99,7 @@ public class PlayerConnected extends PlayerState {
 		} else {
 			event = FrontendEvents.SignedIn.ordinal();
 			player.setState(player.signedInState);
+			player.setUser(user);
 		}
 		outMsg.put("evt", event);
 		outMsg.put("error", errorCode);

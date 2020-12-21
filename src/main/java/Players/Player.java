@@ -4,16 +4,18 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.gemFeverBackend.GameHandler;
+
 import Users.User;
 
 public class Player {
 	private final WebSocketSession session;
 	public final int playerId;
-	public User user = null;
 	public PlayerConnected connectedState;
 	public PlayerSignedIn signedInState;
 	public PlayerSignedUp signedUpState;
 	private PlayerState state = null;
+	private User user = null;
 	
 	private final boolean DEBUG = true;
 	private void log(String msg) {
@@ -31,10 +33,35 @@ public class Player {
 		setState(connectedState);
 	}
 	
+	public void connect() {
+		PlayerManager.Add(this);
+	}
+	
+	public void disconnect() {
+		PlayerManager.Remove(this);
+		if(user != null) {
+			PlayerManager.usersInUse.remove(user.getId());
+		}
+	}
+	
 	public void setState(PlayerState newState) {
 		if(state != null) state.finish();
 		state = newState;
 		state.begin();
+	}
+	
+	public User getUser() {
+		return user;
+	}
+	
+	public void setUser(User _user) {
+		if(user != null) {
+			PlayerManager.usersInUse.remove(user.getId());
+		}
+		user = _user;
+		if(user != null) {
+			PlayerManager.usersInUse.put(user.getId(), user);
+		}
 	}
 	
 	public void handleMessage(JsonNode inMsg) {
@@ -47,6 +74,5 @@ public class Player {
 		} catch(Exception e){
 			log("Error sending message");
 		}
-		
 	}
 }

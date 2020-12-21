@@ -36,7 +36,8 @@ public class GameHandler extends TextWebSocketHandler {
 	@Override
 	public void afterConnectionEstablished(WebSocketSession session) throws Exception {
 		Player player = new Player(playerId.incrementAndGet(), session);
-		PlayerManager.Add(player);
+		player.connect();
+		
 		session.getAttributes().put(PLAYER_ATTRIBUTE, player);
 		//repository.save(new User("Pedro", "la vida es dura", 0,1,2,3,0,1));
 	}
@@ -56,6 +57,6 @@ public class GameHandler extends TextWebSocketHandler {
 	@Override
 	public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
 		Player player = (Player) session.getAttributes().get(PLAYER_ATTRIBUTE);
-		PlayerManager.Remove(player);
+		player.disconnect();
 	}
 }
