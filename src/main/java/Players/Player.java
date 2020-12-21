@@ -12,13 +12,22 @@ public class Player {
 	public User user = null;
 	public PlayerConnected connectedState;
 	public PlayerSignedIn signedInState;
+	public PlayerSignedUp signedUpState;
 	private PlayerState state = null;
+	
+	private final boolean DEBUG = true;
+	private void log(String msg) {
+		if(DEBUG) {
+			System.out.println("[PLAYER " + playerId + "] " + msg);
+		}
+	}
 	
 	public Player(int playerId, WebSocketSession session) {
 		this.session = session;
 		this.playerId = playerId;
 		this.connectedState = new PlayerConnected(this);
 		this.signedInState = new PlayerSignedIn(this);
+		this.signedUpState = new PlayerSignedUp(this);
 		setState(connectedState);
 	}
 	
@@ -32,7 +41,12 @@ public class Player {
 		state.handleMessage(inMsg);
 	}
 
-	public void sendMessage(String msg) throws Exception{
-		this.session.sendMessage(new TextMessage(msg));
+	public void sendMessage(String msg){
+		try {
+			this.session.sendMessage(new TextMessage(msg));
+		} catch(Exception e){
+			log("Error sending message");
+		}
+		
 	}
 }

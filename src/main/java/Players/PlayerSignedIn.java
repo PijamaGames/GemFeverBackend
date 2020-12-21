@@ -22,6 +22,7 @@ public class PlayerSignedIn extends PlayerState {
 	
 	protected void begin() {
 		log("state: signed in");
+		
 	}
 	
 	protected void finish() {

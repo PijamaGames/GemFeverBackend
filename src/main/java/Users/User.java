@@ -25,7 +25,24 @@ public class User {
 
     private int[] items_faces;
     private int[] items_hats;
-    private int[] items_frames; 
+    private int[] items_frames;
+    
+    public User() {
+    	this.id = "";
+		this.password = "";
+		this.avatar_bodyType = 0;
+		this.avatar_skinTone = 0;
+		this.avatar_color = 0;
+		this.avatar_face = 0;
+		this.avatar_hat = 0;
+		this.avatar_frame = 0;
+		
+		this.friendRequests = new String[0];
+		this.friends = new String[0];
+		this.items_faces = new int[] {0,1,2,3};
+		this.items_hats = new int[] {0,1,2,3};
+		this.items_frames = new int[] {0,1,2,3};
+    }
     
 	public User(String id, String password, int avatar_bodyType, int avatar_skinTone, int avatar_color,
 			int avatar_face, int avatar_hat, int avatar_frame) {
@@ -44,7 +61,6 @@ public class User {
 		this.items_hats = new int[] {0,1,2,3};
 		this.items_frames = new int[] {0,1,2,3};
 	}
-
 
 
 	public User(String id, String password, int gems, String[] friendRequests, String[] friends, int avatar_bodyType,
