@@ -38,26 +38,18 @@ public class PlayerConnected extends PlayerState {
 	}
 	
 	private void signUp(JsonNode inMsg) {
-		JsonNode userNode = inMsg.get("user");
-		if(userNode != null) {
-			String username = userNode.get("id").asText();
+		String username = inMsg.get("username").asText();
+		if(username != null) {
+			String password = inMsg.get("password").asText();
 			Optional<User> userOp = GameHandler.repo.findById(username);
 			int errorCode = -1;
 			int event;
+			User user = null;
 			if(userOp.isPresent()) {
 				errorCode = 3;
 				event = FrontendEvents.WrongData.ordinal();
 			} else {
-				User user = new User(
-						username,
-						userNode.get("password").asText(),
-						userNode.get("avatar_bodyType").asInt(),
-						userNode.get("avatar_skinTone").asInt(),
-						userNode.get("avatar_color").asInt(),
-						userNode.get("avatar_face").asInt(),
-						userNode.get("avatar_hat").asInt(),
-						userNode.get("avatar_frame").asInt()
-						);
+				user = new User(username, password);
 				player.setUser(user);
 				user.save();
 				event = FrontendEvents.SignedUp.ordinal();
@@ -66,6 +58,16 @@ public class PlayerConnected extends PlayerState {
 			ObjectNode outMsg = mapper.createObjectNode();
 			outMsg.put("evt", event);
 			outMsg.put("error", errorCode);
+			if(user != null) {
+				String json = "";
+				try {
+					json = GameHandler.mapper.writeValueAsString(user);
+					log(json);
+				} catch (JsonProcessingException e) {
+					e.printStackTrace();
+				}
+				outMsg.put("user", json);
+			}
 			player.sendMessage(outMsg.toString());
 		}
 	}
