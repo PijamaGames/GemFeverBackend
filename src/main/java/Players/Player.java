@@ -65,6 +65,7 @@ public class Player {
 	}
 	
 	public void handleMessage(JsonNode inMsg) {
+		if(inMsg.get("evt").asInt() < 0) return;
 		state.handleMessage(inMsg);
 	}
 

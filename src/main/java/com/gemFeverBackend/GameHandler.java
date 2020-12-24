@@ -19,7 +19,7 @@ public class GameHandler extends TextWebSocketHandler {
 	private AtomicInteger playerId = new AtomicInteger(0);
 	private static final String PLAYER_ATTRIBUTE = "PLAYER";
 	private static final boolean DEBUG_MODE = true;
-	private ObjectMapper mapper = new ObjectMapper();
+	public static ObjectMapper mapper = new ObjectMapper();
 
 	public static UserRepository repo;
 	

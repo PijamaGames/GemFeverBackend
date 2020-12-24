@@ -3,6 +3,7 @@ package Players;
 import java.util.Optional;
 import java.util.Set;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.gemFeverBackend.GameHandler;
@@ -19,7 +20,13 @@ public class PlayerConnected extends PlayerState {
 	private enum BackendEvents{SignIn, SignUp};
 	
 	public void handleMessage(JsonNode inMsg) {
-		BackendEvents event = BackendEvents.values()[(inMsg.get("evt").asInt())];
+		BackendEvents event = null;
+		try {
+			event = BackendEvents.values()[(inMsg.get("evt").asInt())];
+		} catch(ArrayIndexOutOfBoundsException e) {
+			
+		}
+		
 		switch(event) {
 		case SignUp:
 			signUp(inMsg);
@@ -99,7 +106,16 @@ public class PlayerConnected extends PlayerState {
 		} else {
 			event = FrontendEvents.SignedIn.ordinal();
 			player.setState(player.signedInState);
+			user.save();
 			player.setUser(user);
+			String json = "";
+			try {
+				json = GameHandler.mapper.writeValueAsString(user);
+				log(json);
+			} catch (JsonProcessingException e) {
+				e.printStackTrace();
+			}
+			outMsg.put("user", json);
 		}
 		outMsg.put("evt", event);
 		outMsg.put("error", errorCode);

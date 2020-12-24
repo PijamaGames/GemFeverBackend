@@ -13,9 +13,14 @@ public class PlayerSignedIn extends PlayerState {
 	private enum BackendEvents{};
 	
 	public void handleMessage(JsonNode inMsg) {
-		/*BackendEvents event = BackendEvents.values()[(inMsg.get("event").asInt())];
+		/*BackendEvents event = null;
+		try {
+			event = BackendEvents.values()[(inMsg.get("evt").asInt())];
+		} catch(ArrayIndexOutOfBoundsException e) {
+			
+		}*/
 		
-		switch(event) {
+		/*switch(event) {
 
 		}*/
 	}

@@ -22,10 +22,14 @@ public class User {
     
     private String[] friendRequests;
 	private String[] friends;
+	private String[] eventsAttended;
 
     private int[] items_faces;
     private int[] items_hats;
     private int[] items_frames;
+    
+    private boolean allowRequests;
+    private boolean allowInvitations;
     
     public User() {
     	this.id = "";
@@ -39,9 +43,13 @@ public class User {
 		
 		this.friendRequests = new String[0];
 		this.friends = new String[0];
+		this.eventsAttended = new String[0];
 		this.items_faces = new int[] {0,1,2,3};
 		this.items_hats = new int[] {0,1,2,3};
 		this.items_frames = new int[] {0,1,2,3};
+		
+		this.allowRequests = true;
+		this.allowInvitations = true;
     }
     
 	public User(String id, String password, int avatar_bodyType, int avatar_skinTone, int avatar_color,
@@ -57,32 +65,63 @@ public class User {
 		
 		this.friendRequests = new String[0];
 		this.friends = new String[0];
+		this.eventsAttended = new String[0];
 		this.items_faces = new int[] {0,1,2,3};
 		this.items_hats = new int[] {0,1,2,3};
 		this.items_frames = new int[] {0,1,2,3};
+		
+		this.allowInvitations = true;
+		this.allowRequests = true;
 	}
 
-
-	public User(String id, String password, int gems, String[] friendRequests, String[] friends, int avatar_bodyType,
-			int avatar_skinTone, int avatar_color, int avatar_face, int avatar_hat, int avatar_frame, int[] items_faces,
-			int[] items_hats, int[] items_frames) {
-		
+	public User(String id, String password, int gems, int avatar_bodyType, int avatar_skinTone, int avatar_color,
+			int avatar_face, int avatar_hat, int avatar_frame, String[] friendRequests, String[] friends,
+			String[] eventsAttended, int[] items_faces, int[] items_hats, int[] items_frames, boolean allowRequests,
+			boolean allowInvitations) {
+		super();
 		this.id = id;
 		this.password = password;
 		this.gems = gems;
-		this.friendRequests = friendRequests;
-		this.friends = friends;
 		this.avatar_bodyType = avatar_bodyType;
 		this.avatar_skinTone = avatar_skinTone;
 		this.avatar_color = avatar_color;
 		this.avatar_face = avatar_face;
 		this.avatar_hat = avatar_hat;
 		this.avatar_frame = avatar_frame;
+		this.friendRequests = friendRequests;
+		this.friends = friends;
+		this.eventsAttended = eventsAttended;
 		this.items_faces = items_faces;
 		this.items_hats = items_hats;
 		this.items_frames = items_frames;
+		this.allowRequests = allowRequests;
+		this.allowInvitations = allowInvitations;
 	}
-	
+
+	public String[] getEventsAttended() {
+		return eventsAttended;
+	}
+
+	public void setEventsAttended(String[] eventsAttended) {
+		this.eventsAttended = eventsAttended;
+	}
+
+	public boolean isAllowRequests() {
+		return allowRequests;
+	}
+
+	public void setAllowRequests(boolean allowRequests) {
+		this.allowRequests = allowRequests;
+	}
+
+	public boolean isAllowInvitations() {
+		return allowInvitations;
+	}
+
+	public void setAllowInvitations(boolean allowInvitations) {
+		this.allowInvitations = allowInvitations;
+	}
+
 	public void save() {
 		GameHandler.repo.save(this);
 	}

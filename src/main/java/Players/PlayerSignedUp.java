@@ -13,7 +13,12 @@ public class PlayerSignedUp extends PlayerState {
 	private enum BackendEvents{SignIn};
 	
 	public void handleMessage(JsonNode inMsg) {
-		BackendEvents event = BackendEvents.values()[(inMsg.get("evt").asInt())];
+		BackendEvents event = null;
+		try {
+			event = BackendEvents.values()[(inMsg.get("evt").asInt())];
+		} catch(ArrayIndexOutOfBoundsException e) {
+			
+		}
 		switch(event) {
 		case SignIn:
 			signIn(inMsg);
