@@ -18,7 +18,7 @@ public class GameEvent {
 	public String englishMsg;
 	public String spanishMsg;
 	
-	public GameEvent(String name, LocalDate start, LocalDate end, Item[] items, String englishMsg, String spanishMsg) {
+	public GameEvent(String name, LocalDate start, LocalDate end, Item[] items, String spanishMsg, String englishMsg) {
 		super();
 		this.name = name;
 		this.start = start;
