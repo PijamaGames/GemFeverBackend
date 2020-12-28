@@ -1,9 +1,16 @@
 package Players;
 
+import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.gemFeverBackend.GameEvent;
+import com.gemFeverBackend.GameEventsManager;
 import com.gemFeverBackend.GameHandler;
 
 import Users.User;
@@ -67,6 +74,24 @@ public class Player {
 	public void handleMessage(JsonNode inMsg) {
 		if(inMsg.get("evt").asInt() < 0) return;
 		state.handleMessage(inMsg);
+	}
+	
+	public GameEvent checkEvents() {
+		if(user == null) return null;
+		log("CHECKING EVENTS");
+		LocalDate now = LocalDate.now();
+		Set<String> userEvents = new HashSet<String>(Arrays.asList(user.getEventsAttended()));
+		for(GameEvent evt : GameEventsManager.events) {
+			if(!now.isBefore(evt.start) && !now.isAfter(evt.end)) {
+				if(!userEvents.contains(evt.name)) {
+					log("ADDING EVENT: " + evt.name);
+					evt.AddToUser(user);
+					user.save();
+					return evt;
+				}
+			}
+		}
+		return null;
 	}
 
 	public void sendMessage(String msg){

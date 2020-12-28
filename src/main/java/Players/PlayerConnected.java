@@ -6,6 +6,7 @@ import java.util.Set;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.gemFeverBackend.GameEvent;
 import com.gemFeverBackend.GameHandler;
 
 import Users.User;
@@ -107,13 +108,19 @@ public class PlayerConnected extends PlayerState {
 			log("wrong data");
 		} else {
 			event = FrontendEvents.SignedIn.ordinal();
-			player.setState(player.signedInState);
-			user.save();
 			player.setUser(user);
+			player.setState(player.signedInState);
+			GameEvent gameEvt = player.checkEvents();
+			outMsg.put("hasEvent", gameEvt != null);
+			outMsg.put("spanishMsg", gameEvt != null ? gameEvt.spanishMsg : "");
+			outMsg.put("englishMsg", gameEvt != null ? gameEvt.englishMsg : "");
+			if(gameEvt == null) {
+				user.save();
+			}
+			
 			String json = "";
 			try {
 				json = GameHandler.mapper.writeValueAsString(user);
-				log(json);
 			} catch (JsonProcessingException e) {
 				e.printStackTrace();
 			}

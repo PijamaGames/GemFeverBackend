@@ -16,17 +16,17 @@ public class User {
 	private int avatar_bodyType = 0;
 	private int avatar_skinTone = 0;
 	private int avatar_color = 0;
-	private int avatar_face = 0;
-    private int avatar_hat = 0;
-    private int avatar_frame = 0;
+	private String avatar_face = "";
+    private String avatar_hat = "";
+    private String avatar_frame = "";
     
     private String[] friendRequests;
 	private String[] friends;
 	private String[] eventsAttended;
 
-    private int[] items_faces;
-    private int[] items_hats;
-    private int[] items_frames;
+    private String[] items_faces;
+    private String[] items_hats;
+    private String[] items_frames;
     
     private boolean allowRequests;
     private boolean allowInvitations;
@@ -37,16 +37,16 @@ public class User {
 		this.avatar_bodyType = 0;
 		this.avatar_skinTone = 0;
 		this.avatar_color = 0;
-		this.avatar_face = 0;
-		this.avatar_hat = 0;
-		this.avatar_frame = 0;
+		this.avatar_face = "";
+		this.avatar_hat = "";
+		this.avatar_frame = "";
 		
 		this.friendRequests = new String[0];
 		this.friends = new String[0];
 		this.eventsAttended = new String[0];
-		this.items_faces = new int[] {0,1,2,3};
-		this.items_hats = new int[] {0,1,2,3};
-		this.items_frames = new int[] {0,1,2,3};
+		this.items_faces = new String[] {};
+		this.items_hats = new String[] {};
+		this.items_frames = new String[] {};
 		
 		this.allowRequests = true;
 		this.allowInvitations = true;
@@ -58,23 +58,23 @@ public class User {
 		this.avatar_bodyType = 0;
 		this.avatar_skinTone = 0;
 		this.avatar_color = 0;
-		this.avatar_face = 0;
-		this.avatar_hat = 0;
-		this.avatar_frame = 0;
+		this.avatar_face = "";
+		this.avatar_hat = "";
+		this.avatar_frame = "";
 		
 		this.friendRequests = new String[0];
 		this.friends = new String[0];
 		this.eventsAttended = new String[0];
-		this.items_faces = new int[] {0,1,2,3};
-		this.items_hats = new int[] {0,1,2,3};
-		this.items_frames = new int[] {0,1,2,3};
+		this.items_faces = new String[] {};
+		this.items_hats = new String[] {};
+		this.items_frames = new String[] {};
 		
 		this.allowRequests = true;
 		this.allowInvitations = true;
     }
     
 	public User(String id, String password, int avatar_bodyType, int avatar_skinTone, int avatar_color,
-			int avatar_face, int avatar_hat, int avatar_frame) {
+			String avatar_face, String avatar_hat, String avatar_frame) {
 		this.id = id;
 		this.password = password;
 		this.avatar_bodyType = avatar_bodyType;
@@ -87,17 +87,17 @@ public class User {
 		this.friendRequests = new String[0];
 		this.friends = new String[0];
 		this.eventsAttended = new String[0];
-		this.items_faces = new int[] {0,1,2,3};
-		this.items_hats = new int[] {0,1,2,3};
-		this.items_frames = new int[] {0,1,2,3};
+		this.items_faces = new String[] {};
+		this.items_hats = new String[] {};
+		this.items_frames = new String[] {};
 		
 		this.allowInvitations = true;
 		this.allowRequests = true;
 	}
 
 	public User(String id, String password, int gems, int avatar_bodyType, int avatar_skinTone, int avatar_color,
-			int avatar_face, int avatar_hat, int avatar_frame, String[] friendRequests, String[] friends,
-			String[] eventsAttended, int[] items_faces, int[] items_hats, int[] items_frames, boolean allowRequests,
+			String avatar_face, String avatar_hat, String avatar_frame, String[] friendRequests, String[] friends,
+			String[] eventsAttended, String[] items_faces, String[] items_hats, String[] items_frames, boolean allowRequests,
 			boolean allowInvitations) {
 		super();
 		this.id = id;
@@ -195,40 +195,53 @@ public class User {
 	public void setAvatar_color(int avatar_color) {
 		this.avatar_color = avatar_color;
 	}
-	public int getAvatar_face() {
+
+	public String getAvatar_face() {
 		return avatar_face;
 	}
-	public void setAvatar_face(int avatar_face) {
+
+	public void setAvatar_face(String avatar_face) {
 		this.avatar_face = avatar_face;
 	}
-	public int getAvatar_hat() {
+
+	public String getAvatar_hat() {
 		return avatar_hat;
 	}
-	public void setAvatar_hat(int avatar_hat) {
+
+	public void setAvatar_hat(String avatar_hat) {
 		this.avatar_hat = avatar_hat;
 	}
-	public int getAvatar_frame() {
+
+	public String getAvatar_frame() {
 		return avatar_frame;
 	}
-	public void setAvatar_frame(int avatar_frame) {
+
+	public void setAvatar_frame(String avatar_frame) {
 		this.avatar_frame = avatar_frame;
 	}
-	public int[] getItems_faces() {
+
+	public String[] getItems_faces() {
 		return items_faces;
 	}
-	public void setItems_faces(int[] items_faces) {
+
+	public void setItems_faces(String[] items_faces) {
 		this.items_faces = items_faces;
 	}
-	public int[] getItems_hats() {
+
+	public String[] getItems_hats() {
 		return items_hats;
 	}
-	public void setItems_hats(int[] items_hats) {
+
+	public void setItems_hats(String[] items_hats) {
 		this.items_hats = items_hats;
 	}
-	public int[] getItems_frames() {
+
+	public String[] getItems_frames() {
 		return items_frames;
 	}
-	public void setItems_frames(int[] items_frames) {
+
+	public void setItems_frames(String[] items_frames) {
 		this.items_frames = items_frames;
 	}
+	
 }

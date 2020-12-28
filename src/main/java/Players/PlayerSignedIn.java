@@ -48,7 +48,6 @@ public class PlayerSignedIn extends PlayerState {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 	}
 	
 	public void signOut() {
@@ -61,7 +60,6 @@ public class PlayerSignedIn extends PlayerState {
 	
 	protected void begin() {
 		log("state: signed in");
-		
 	}
 	
 	protected void finish() {
