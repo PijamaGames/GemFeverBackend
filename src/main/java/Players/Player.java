@@ -21,6 +21,7 @@ public class Player {
 	public PlayerConnected connectedState;
 	public PlayerSignedIn signedInState;
 	public PlayerSignedUp signedUpState;
+	public PlayerInRoom inRoomState;
 	private PlayerState state = null;
 	private User user = null;
 	
@@ -37,6 +38,7 @@ public class Player {
 		this.connectedState = new PlayerConnected(this);
 		this.signedInState = new PlayerSignedIn(this);
 		this.signedUpState = new PlayerSignedUp(this);
+		this.inRoomState = new PlayerInRoom(this);
 		setState(connectedState);
 	}
 	
@@ -47,7 +49,15 @@ public class Player {
 	public void disconnect() {
 		PlayerManager.Remove(this);
 		if(user != null) {
-			PlayerManager.usersInUse.remove(user.getId());
+			PlayerManager.RemoveUser(user);
+		}
+		if(state == inRoomState) {
+			if(inRoomState.isHost) {
+				inRoomState.room.removeHost();
+			}
+			if(inRoomState.isClient) {
+				inRoomState.room.removeClient(this, false, true);
+			}
 		}
 	}
 	
@@ -57,17 +67,21 @@ public class Player {
 		state.begin();
 	}
 	
+	public PlayerState getState() {
+		return state;
+	}
+	
 	public User getUser() {
 		return user;
 	}
 	
 	public void setUser(User _user) {
 		if(user != null) {
-			PlayerManager.usersInUse.remove(user.getId());
+			PlayerManager.RemoveUser(user);
 		}
 		user = _user;
 		if(user != null) {
-			PlayerManager.usersInUse.put(user.getId(), user);
+			PlayerManager.AddUser(this, user);
 		}
 	}
 	
