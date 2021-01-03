@@ -2,7 +2,8 @@ package Players;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.gemFeverBackend.Room;
+
+import Rooms.Room;
 
 public class PlayerInRoom extends PlayerState {
 
@@ -41,6 +42,8 @@ public class PlayerInRoom extends PlayerState {
 	public void sendError() {
 		ObjectNode outMsg = mapper.createObjectNode();
 		outMsg.put("evt", FrontendEvents.Error.ordinal());
+		int error = 0;
+		outMsg.put("error", error);
 		player.setState(player.signedInState);
 	}
 	

@@ -1,4 +1,4 @@
-package com.gemFeverBackend;
+package Rooms;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -9,11 +9,18 @@ import Players.Player;
 
 
 public class Room {
+	
+	public static HashSet<Room> openRooms = new HashSet<Room>();
+	
 	private static AtomicInteger roomCount = new AtomicInteger(0);
 	private int id;
 	
-	private Player host;
+	public Player host;
 	private HashSet<Player> clients;
+	
+	private boolean playing = false;
+	
+	private final int maxClients = 3;
 	
 	public Room(Player host) {
 		id = roomCount.incrementAndGet();
@@ -22,19 +29,39 @@ public class Room {
 		host.inRoomState.isHost = true;
 		host.inRoomState.isClient = false;
 		this.clients = new HashSet<Player>();
+		playing = false;
+		openRooms.add(this);
+		log("created by " + host.getUser().getId());
+	}
+	
+	public int playerCount() {
+		return clients.size()+1;
+	}
+	
+	public boolean admitsClients() {
+		return !playing && clients.size() < maxClients;
 	}
 	
 	public void addClient(Player client) {
-		if(client != null) {
-			client.inRoomState.room = this;
-			clients.add(client);
-			client.inRoomState.isHost = false;
-			client.inRoomState.isClient = true;
+		if(admitsClients()) {
+			if(client != null) {
+				client.inRoomState.room = this;
+				clients.add(client);
+				client.inRoomState.isHost = false;
+				client.inRoomState.isClient = true;
+				if(!admitsClients()) {
+					openRooms.remove(this);
+				}
+			}
+		}
+		else if(client != null) {
+			log("could not add " + client.getUser().getId() + ", room does not admit clients");
 		}
 	}
 	
 	public void removeClient(Player client, boolean error, boolean disconnected) {
 		if(client!=null) {
+			log("added client " + client.getUser().getId());
 			client.inRoomState.room = null;
 			clients.remove(client);
 			client.inRoomState.isClient = false;
@@ -46,18 +73,21 @@ public class Room {
 					client.inRoomState.exit();
 				}
 			}
+			if(admitsClients()) openRooms.add(this);
 		}
 	}
 	
 	public void removeHost() {
+		log("remove host " + host.getUser().getId());
 		if(host != null) {
-			
 			host.setState(host.signedInState);
+			host.inRoomState.room = null;
 			host = null;
 		}
 		for(Player c : clients) {
 			removeClient(c, true, false);
 		}
+		openRooms.remove(this);
 	}
 	
 	private static boolean DEBUG_MODE = true;
