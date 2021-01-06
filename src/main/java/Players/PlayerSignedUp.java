@@ -1,6 +1,7 @@
 package Players;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.gemFeverBackend.GameEvent;
@@ -15,7 +16,7 @@ public class PlayerSignedUp extends PlayerState {
 	}
 
 	private enum FrontendEvents{SignedIn};
-	private enum BackendEvents{SignIn};
+	private enum BackendEvents{SignIn, Save};
 	
 	public void handleMessage(JsonNode inMsg) {
 		BackendEvents event = null;
@@ -28,6 +29,24 @@ public class PlayerSignedUp extends PlayerState {
 		case SignIn:
 			signIn(inMsg);
 			break;
+		case Save:
+			saveInfo(inMsg);
+			break;
+		}
+	}
+	
+	public void saveInfo(JsonNode inMsg) {
+		try {
+			User user = GameHandler.mapper.readValue(inMsg.get("user").toString(), User.class);
+			player.setUser(user);
+			user.save();
+			log("User data saved");
+		} catch (JsonMappingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonProcessingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 	
