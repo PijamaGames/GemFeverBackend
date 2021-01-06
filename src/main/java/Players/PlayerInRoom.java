@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import Rooms.Room;
+import Users.User;
 
 public class PlayerInRoom extends PlayerState {
 
@@ -11,12 +12,11 @@ public class PlayerInRoom extends PlayerState {
 	public boolean isHost;
 	public boolean isClient;
 	
-	
 	public PlayerInRoom(Player player) {
 		super(player);
 	}
 	
-	private enum FrontendEvents{Error, Exit};
+	private enum FrontendEvents{Error, Exit, AddPlayer, RemovePlayer};
 	private enum BackendEvents{Exit};
 	
 	public void handleMessage(JsonNode inMsg) {
@@ -28,9 +28,39 @@ public class PlayerInRoom extends PlayerState {
 		}
 		switch(event) {
 		case Exit:
-			exit();
+			if(isHost) {
+				room.removeHost();
+			} else {
+				room.removeClient(player, false, false);
+			}
 			break;
 		}
+	}
+	
+	public void addPlayer(Player otherPlayer) {
+		ObjectNode outMsg = mapper.createObjectNode();
+		outMsg.put("evt", FrontendEvents.AddPlayer.ordinal());
+		outMsg.put("roomEvt", true);
+		outMsg.put("isHost", otherPlayer.inRoomState.isHost);
+		outMsg.put("isClient", otherPlayer.inRoomState.isClient);
+		outMsg.put("id", otherPlayer.getUser().getId());
+		
+		User user = otherPlayer.getUser();
+		outMsg.put("avatar_bodyType", user.getAvatar_bodyType());
+		outMsg.put("avatar_skinTone", user.getAvatar_skinTone());
+		outMsg.put("avatar_color", user.getAvatar_color());
+		outMsg.put("avatar_face", user.getAvatar_face());
+		outMsg.put("avatar_hat", user.getAvatar_hat());
+		outMsg.put("avatar_frame", user.getAvatar_frame());
+		
+		player.sendMessage(outMsg.toString());
+	}
+	
+	public void removePlayer(Player player) {
+		ObjectNode outMsg = mapper.createObjectNode();
+		outMsg.put("evt", FrontendEvents.RemovePlayer.ordinal());
+		outMsg.put("player", player.getUser().getId());
+		player.sendMessage(outMsg.toString());
 	}
 	
 	public void exit() {
@@ -52,7 +82,6 @@ public class PlayerInRoom extends PlayerState {
 	}
 	
 	protected void finish() {
-		
 		
 	}
 	

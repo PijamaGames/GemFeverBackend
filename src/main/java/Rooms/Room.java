@@ -45,10 +45,22 @@ public class Room {
 	public void addClient(Player client) {
 		if(admitsClients()) {
 			if(client != null) {
+				client.setState(client.inRoomState);
 				client.inRoomState.room = this;
-				clients.add(client);
 				client.inRoomState.isHost = false;
 				client.inRoomState.isClient = true;
+				
+				//SEND INFO
+				client.inRoomState.addPlayer(host);
+				for(Player p : clients) {
+					client.inRoomState.addPlayer(p);
+					p.inRoomState.addPlayer(client);
+				}
+				host.inRoomState.addPlayer(client);
+				// 
+				
+				clients.add(client);
+				
 				if(!admitsClients()) {
 					openRooms.remove(this);
 				}
@@ -73,6 +85,14 @@ public class Room {
 					client.inRoomState.exit();
 				}
 			}
+			
+			if(disconnected && !error) {
+				for(Player p : clients) {
+					p.inRoomState.removePlayer(client);
+				}
+				host.inRoomState.removePlayer(client);
+			}
+			
 			if(admitsClients()) openRooms.add(this);
 		}
 	}

@@ -112,7 +112,7 @@ public class PlayerSignedIn extends PlayerState {
 						outMsg.put("isClient", true);
 						room.addClient(player);
 						player.sendMessage(outMsg.toString());
-						player.setState(player.inRoomState);
+						//player.setState(player.inRoomState); //in room script
 					} else {
 						error = 3; // room does not admit clients
 					}
