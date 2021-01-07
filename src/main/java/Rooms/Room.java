@@ -14,6 +14,7 @@ public class Room {
 	
 	private static AtomicInteger roomCount = new AtomicInteger(0);
 	private int id;
+	public int level;
 	
 	public Player host;
 	private HashSet<Player> clients;
@@ -22,16 +23,17 @@ public class Room {
 	
 	private final int maxClients = 3;
 	
-	public Room(Player host) {
+	public Room(Player host, int level) {
 		id = roomCount.incrementAndGet();
 		this.host = host;
+		this.level = level;
 		host.inRoomState.room = this;
 		host.inRoomState.isHost = true;
 		host.inRoomState.isClient = false;
 		this.clients = new HashSet<Player>();
 		playing = false;
 		openRooms.add(this);
-		log("created by " + host.getUser().getId());
+		log("created by " + host.getUser().getId() + " level " + level);
 	}
 	
 	public int playerCount() {

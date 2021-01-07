@@ -77,11 +77,13 @@ public class PlayerSignedIn extends PlayerState {
 	
 	public void createRoom(JsonNode inMsg) {
 		if(player.inRoomState.room != null) return;
-		new Room(player);
+		int level = inMsg.get("level").asInt();
+		new Room(player, level);
 		ObjectNode outMsg = mapper.createObjectNode();
 		outMsg.put("evt", FrontendEvents.InRoom.ordinal());
 		outMsg.put("isHost", true);
 		outMsg.put("isClient", false);
+		outMsg.put("level", level);
 		player.setState(player.inRoomState);
 		player.sendMessage(outMsg.toString());
 	}
@@ -110,6 +112,7 @@ public class PlayerSignedIn extends PlayerState {
 						outMsg.put("evt", FrontendEvents.InRoom.ordinal());
 						outMsg.put("isHost", false);
 						outMsg.put("isClient", true);
+						outMsg.put("level", room.level);
 						room.addClient(player);
 						player.sendMessage(outMsg.toString());
 						//player.setState(player.inRoomState); //in room script
