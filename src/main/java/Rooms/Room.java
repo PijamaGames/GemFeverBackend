@@ -78,8 +78,11 @@ public class Room {
 	
 	public void spawnPlayer(Player player, ObjectNode outMsg) {
 		for(Player p : clients) {
-			if(p != player)
+			if(p != player) {
+				log("sending spawn event to " + p.getUser().getId());
 				player.sendMessage(outMsg.toString());
+			}
+				
 		}
 		if(host != player) {
 			host.sendMessage(outMsg.toString());

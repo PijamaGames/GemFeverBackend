@@ -41,13 +41,12 @@ public class PlayerInRoom extends PlayerState {
 			room.propagateInfo(inMsg.toString(), player);
 			break;
 		case Spawn:
-			log("spawn");
+			log("spawn " + player.getUser().getId());
 			outMsg.put("evt", FrontendEvents.Spawn.ordinal());
 			outMsg.put("id", player.getUser().getId());
 			room.spawnPlayer(player, outMsg);
 			break;
 		}
-		
 	}
 	
 	public void addPlayer(Player otherPlayer) {
