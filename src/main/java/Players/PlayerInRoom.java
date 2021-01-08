@@ -11,6 +11,7 @@ public class PlayerInRoom extends PlayerState {
 	public Room room;
 	public boolean isHost;
 	public boolean isClient;
+	public boolean spawned;
 	
 	public PlayerInRoom(Player player) {
 		super(player);
@@ -42,6 +43,7 @@ public class PlayerInRoom extends PlayerState {
 			break;
 		case Spawn:
 			log("spawn " + player.getUser().getId());
+			spawned = true;
 			outMsg.put("evt", FrontendEvents.Spawn.ordinal());
 			outMsg.put("id", player.getUser().getId());
 			room.spawnPlayer(player, outMsg);
@@ -56,6 +58,7 @@ public class PlayerInRoom extends PlayerState {
 		outMsg.put("isHost", otherPlayer.inRoomState.isHost);
 		outMsg.put("isClient", otherPlayer.inRoomState.isClient);
 		outMsg.put("id", otherPlayer.getUser().getId());
+		outMsg.put("spawned", spawned);
 		
 		User user = otherPlayer.getUser();
 		outMsg.put("avatar_bodyType", user.getAvatar_bodyType());
@@ -91,10 +94,11 @@ public class PlayerInRoom extends PlayerState {
 	
 	protected void begin() {
 		log("state: in room");
+		spawned = false;
 	}
 	
 	protected void finish() {
-		
+		spawned = false;
 	}
 	
 }
