@@ -58,7 +58,7 @@ public class PlayerInRoom extends PlayerState {
 		outMsg.put("isHost", otherPlayer.inRoomState.isHost);
 		outMsg.put("isClient", otherPlayer.inRoomState.isClient);
 		outMsg.put("id", otherPlayer.getUser().getId());
-		outMsg.put("spawned", spawned);
+		outMsg.put("spawned", otherPlayer.inRoomState.spawned);
 		
 		User user = otherPlayer.getUser();
 		outMsg.put("avatar_bodyType", user.getAvatar_bodyType());
