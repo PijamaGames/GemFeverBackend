@@ -71,10 +71,10 @@ public class PlayerInRoom extends PlayerState {
 		player.sendMessage(outMsg.toString());
 	}
 	
-	public void removePlayer(Player player) {
+	public void removePlayer(Player otherPlayer) {
 		ObjectNode outMsg = mapper.createObjectNode();
 		outMsg.put("evt", FrontendEvents.RemovePlayer.ordinal());
-		outMsg.put("id", player.getUser().getId());
+		outMsg.put("id", otherPlayer.getUser().getId());
 		player.sendMessage(outMsg.toString());
 	}
 	
