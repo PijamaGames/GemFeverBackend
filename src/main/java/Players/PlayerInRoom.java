@@ -74,7 +74,7 @@ public class PlayerInRoom extends PlayerState {
 	public void removePlayer(Player player) {
 		ObjectNode outMsg = mapper.createObjectNode();
 		outMsg.put("evt", FrontendEvents.RemovePlayer.ordinal());
-		outMsg.put("player", player.getUser().getId());
+		outMsg.put("id", player.getUser().getId());
 		player.sendMessage(outMsg.toString());
 	}
 	
@@ -82,6 +82,7 @@ public class PlayerInRoom extends PlayerState {
 		ObjectNode outMsg = mapper.createObjectNode();
 		outMsg.put("evt", FrontendEvents.Exit.ordinal());
 		player.setState(player.signedInState);
+		player.sendMessage(outMsg.toString());
 	}
 	
 	public void sendError() {
@@ -90,6 +91,7 @@ public class PlayerInRoom extends PlayerState {
 		int error = 0;
 		outMsg.put("error", error);
 		player.setState(player.signedInState);
+		player.sendMessage(outMsg.toString());
 	}
 	
 	protected void begin() {
