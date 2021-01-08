@@ -37,7 +37,7 @@ public class PlayerInRoom extends PlayerState {
 			break;
 		case SendObjects:
 			outMsg.put("evt", FrontendEvents.GetInfo.ordinal());
-			outMsg.put("objs", inMsg.get("objs").asText());
+			outMsg.put("objs", inMsg.get("objs").toString());
 			room.propagateInfo(outMsg.toString(), player);
 			break;
 		case Spawn:
