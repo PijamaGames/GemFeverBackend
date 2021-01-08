@@ -5,6 +5,9 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
 import Players.Player;
 
 
@@ -73,6 +76,16 @@ public class Room {
 		}
 	}
 	
+	public void spawnPlayer(Player player, ObjectNode outMsg) {
+		for(Player p : clients) {
+			if(p != player)
+				player.sendMessage(outMsg.toString());
+		}
+		if(host != player) {
+			host.sendMessage(outMsg.toString());
+		}
+	}
+	
 	public void removeClient(Player client, boolean error, boolean disconnected) {
 		if(client!=null) {
 			log("added client " + client.getUser().getId());
@@ -110,6 +123,16 @@ public class Room {
 			removeClient(c, true, false);
 		}
 		openRooms.remove(this);
+	}
+	
+	public void propagateInfo(String outMsg, Player player) {
+		if(player.inRoomState.isHost) {
+			for(Player c : clients) {
+				c.sendMessage(outMsg);
+			}
+		} else if (player.inRoomState.isClient) {
+			host.sendMessage(outMsg);
+		}
 	}
 	
 	private static boolean DEBUG_MODE = true;

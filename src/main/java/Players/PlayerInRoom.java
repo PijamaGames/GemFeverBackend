@@ -16,8 +16,8 @@ public class PlayerInRoom extends PlayerState {
 		super(player);
 	}
 	
-	private enum FrontendEvents{Error, Exit, AddPlayer, RemovePlayer};
-	private enum BackendEvents{Exit};
+	private enum FrontendEvents{Error, Exit, AddPlayer, RemovePlayer, GetInfo, Spawn};
+	private enum BackendEvents{Exit, SendObjects, Spawn};
 	
 	public void handleMessage(JsonNode inMsg) {
 		BackendEvents event = null;
@@ -26,6 +26,7 @@ public class PlayerInRoom extends PlayerState {
 		} catch(ArrayIndexOutOfBoundsException e) {
 			
 		}
+		ObjectNode outMsg = mapper.createObjectNode();
 		switch(event) {
 		case Exit:
 			if(isHost) {
@@ -34,7 +35,19 @@ public class PlayerInRoom extends PlayerState {
 				room.removeClient(player, false, false);
 			}
 			break;
+		case SendObjects:
+			outMsg.put("evt", FrontendEvents.GetInfo.ordinal());
+			outMsg.put("objs", inMsg.get("objs").asText());
+			room.propagateInfo(outMsg.toString(), player);
+			break;
+		case Spawn:
+			log("spawn");
+			outMsg.put("evt", FrontendEvents.Spawn.ordinal());
+			outMsg.put("id", player.getUser().getId());
+			room.spawnPlayer(player, outMsg);
+			break;
 		}
+		
 	}
 	
 	public void addPlayer(Player otherPlayer) {
