@@ -53,7 +53,7 @@ public class Player {
 		}
 		if(state == inRoomState) {
 			if(inRoomState.isHost) {
-				inRoomState.room.removeHost();
+				inRoomState.room.removeHost(true);
 			}
 			if(inRoomState.isClient) {
 				inRoomState.room.removeClient(this, false, true);

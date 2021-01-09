@@ -114,11 +114,10 @@ public class Room {
 		}
 	}
 	
-	public void removeHost() {
+	public void removeHost(boolean disconnected) {
 		log("remove host " + host.getUser().getId());
 		if(host != null) {
-			host.setState(host.signedInState);
-			host.inRoomState.room = null;
+			host.inRoomState.exit();
 			host = null;
 		}
 		for(Player c : clients) {

@@ -31,15 +31,12 @@ public class PlayerInRoom extends PlayerState {
 		switch(event) {
 		case Exit:
 			if(isHost) {
-				room.removeHost();
-				exit();
+				room.removeHost(false);
 			} else {
 				room.removeClient(player, false, false);
 			}
 			break;
 		case SendObjects:
-			/*outMsg.put("evt", FrontendEvents.GetInfo.ordinal());
-			outMsg.put("objs", inMsg.get("objs").toString());*/
 			room.propagateInfo(inMsg.toString(), player);
 			break;
 		case Spawn:
@@ -52,7 +49,9 @@ public class PlayerInRoom extends PlayerState {
 		case ChangeScene:
 			String scene = inMsg.get("id").asText();
 			log("changeScene: " + scene);
-			
+			outMsg.put("evt", FrontendEvents.ChangeScene.ordinal());
+			outMsg.put("id", scene);
+			room.changeScene(outMsg, inMsg.get("playing").asBoolean());
 			break;
 		}
 	}
@@ -107,6 +106,9 @@ public class PlayerInRoom extends PlayerState {
 	
 	protected void finish() {
 		spawned = false;
+		room = null;
+		isClient = false;
+		isHost = false;
 	}
 	
 }
