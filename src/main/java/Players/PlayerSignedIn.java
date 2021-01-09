@@ -33,6 +33,7 @@ public class PlayerSignedIn extends PlayerState {
 		} catch(ArrayIndexOutOfBoundsException e) {
 			
 		}
+		if(inMsg.has("objs")) return;
 		
 		switch(event) {
 		case SignOut:
