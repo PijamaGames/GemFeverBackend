@@ -57,6 +57,7 @@ public class GameHandler extends TextWebSocketHandler {
 	@Override
 	public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
 		Player player = (Player) session.getAttributes().get(PLAYER_ATTRIBUTE);
-		player.disconnect();
+		player.disconnect(status.getReason());
+	
 	}
 }

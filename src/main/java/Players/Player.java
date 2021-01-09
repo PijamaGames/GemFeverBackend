@@ -46,7 +46,8 @@ public class Player {
 		PlayerManager.Add(this);
 	}
 	
-	public void disconnect() {
+	public void disconnect(String status) {
+		log("disconnected, " + status);
 		PlayerManager.Remove(this);
 		if(user != null) {
 			PlayerManager.RemoveUser(user);
