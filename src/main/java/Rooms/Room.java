@@ -90,7 +90,7 @@ public class Room {
 	
 	public void removeClient(Player client, boolean error, boolean disconnected) {
 		if(client!=null) {
-			log("added client " + client.getUser().getId());
+			log("remove client " + client.getUser().getId());
 			client.inRoomState.room = null;
 			clients.remove(client);
 			client.inRoomState.isClient = false;
