@@ -103,12 +103,12 @@ public class Room {
 				}
 			}
 			
-			if(disconnected && !error) {
+			//if(disconnected && !error) {
 				for(Player p : clients) {
 					p.inRoomState.removePlayer(client);
 				}
 				host.inRoomState.removePlayer(client);
-			}
+			//}
 			
 			if(admitsClients()) openRooms.add(this);
 		}
