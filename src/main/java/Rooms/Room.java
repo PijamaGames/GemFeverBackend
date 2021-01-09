@@ -127,6 +127,17 @@ public class Room {
 		openRooms.remove(this);
 	}
 	
+	public void changeScene(ObjectNode outMsg, boolean playing) {
+		this.playing = playing;
+		for(Player c : clients) {
+			if(!c.inRoomState.spawned && playing) {
+				removeClient(c, true, false);
+			} else {
+				c.sendMessage(outMsg.toString());
+			}
+		}
+	}
+	
 	public void propagateInfo(String outMsg, Player player) {
 		if(player.inRoomState.isHost) {
 			for(Player c : clients) {

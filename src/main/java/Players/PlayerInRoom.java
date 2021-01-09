@@ -17,8 +17,8 @@ public class PlayerInRoom extends PlayerState {
 		super(player);
 	}
 	
-	private enum FrontendEvents{Error, GetInfo, Exit, AddPlayer, RemovePlayer, Spawn};
-	private enum BackendEvents{Exit, SendObjects, Spawn};
+	private enum FrontendEvents{Error, GetInfo, Exit, AddPlayer, RemovePlayer, Spawn, ChangeScene};
+	private enum BackendEvents{Exit, SendObjects, Spawn, ChangeScene};
 	
 	public void handleMessage(JsonNode inMsg) {
 		BackendEvents event = null;
@@ -47,6 +47,11 @@ public class PlayerInRoom extends PlayerState {
 			outMsg.put("evt", FrontendEvents.Spawn.ordinal());
 			outMsg.put("id", player.getUser().getId());
 			room.spawnPlayer(player, outMsg);
+			break;
+		case ChangeScene:
+			String scene = inMsg.get("id").asText();
+			log("changeScene: " + scene);
+			
 			break;
 		}
 	}
