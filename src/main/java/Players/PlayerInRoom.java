@@ -32,6 +32,7 @@ public class PlayerInRoom extends PlayerState {
 		case Exit:
 			if(isHost) {
 				room.removeHost();
+				exit();
 			} else {
 				room.removeClient(player, false, false);
 			}
