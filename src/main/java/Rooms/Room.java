@@ -132,6 +132,11 @@ public class Room {
 	
 	public void changeScene(ObjectNode outMsg, boolean playing) {
 		this.playing = playing;
+		if(admitsClients()) {
+			openRooms.add(this);
+		} else {
+			openRooms.remove(this);
+		}
 		for(Player c : clients) {
 			if(!c.inRoomState.spawned && playing) {
 				removeClient(c, true, false);

@@ -18,7 +18,7 @@ public class PlayerInRoom extends PlayerState {
 	}
 	
 	private enum FrontendEvents{Error, GetInfo, Exit, AddPlayer, RemovePlayer, Spawn, ChangeScene};
-	private enum BackendEvents{Exit, SendObjects, Spawn, ChangeScene};
+	private enum BackendEvents{Exit, SendObjects, Spawn, ChangeScene, SaveGems};
 	
 	public void handleMessage(JsonNode inMsg) {
 		BackendEvents event = null;
@@ -53,6 +53,10 @@ public class PlayerInRoom extends PlayerState {
 			outMsg.put("id", scene);
 			room.changeScene(outMsg, inMsg.get("playing").asBoolean());
 			break;
+		case SaveGems:
+			User user = player.getUser();
+			user.setGems(user.getGems()+inMsg.get("gems").asInt());
+			user.save();
 		}
 	}
 	
