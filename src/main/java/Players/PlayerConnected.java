@@ -9,6 +9,8 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.gemFeverBackend.GameEvent;
 import com.gemFeverBackend.GameHandler;
 
+import Items.Item;
+import Items.ItemManager;
 import Users.User;
 
 public class PlayerConnected extends PlayerState {
@@ -51,7 +53,14 @@ public class PlayerConnected extends PlayerState {
 				event = FrontendEvents.WrongData.ordinal();
 			} else {
 				user = new User(username, password);
+				ItemManager.face1.AddToUser(user);
+				ItemManager.face2.AddToUser(user);
+				ItemManager.face3.AddToUser(user);
+				ItemManager.face4.AddToUser(user);
+				ItemManager.cap.AddToUser(user);
+				user.setGems(150);
 				player.setUser(user);
+				Item.RemoveDuplicates(user);
 				user.save();
 				event = FrontendEvents.SignedUp.ordinal();
 				player.setState(player.signedUpState);
@@ -108,6 +117,7 @@ public class PlayerConnected extends PlayerState {
 			log("wrong data");
 		} else {
 			event = FrontendEvents.SignedIn.ordinal();
+			Item.RemoveDuplicates(user);
 			player.setUser(user);
 			player.setState(player.signedInState);
 			GameEvent gameEvt = player.checkEvents();

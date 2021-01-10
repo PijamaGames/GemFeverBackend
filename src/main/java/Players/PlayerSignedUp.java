@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.gemFeverBackend.GameEvent;
 import com.gemFeverBackend.GameHandler;
 
+import Items.Item;
 import Users.User;
 
 public class PlayerSignedUp extends PlayerState {
@@ -39,6 +40,7 @@ public class PlayerSignedUp extends PlayerState {
 		try {
 			User user = GameHandler.mapper.readValue(inMsg.get("user").toString(), User.class);
 			player.setUser(user);
+			Item.RemoveDuplicates(user);
 			user.save();
 			log("User data saved");
 		} catch (JsonMappingException e) {
