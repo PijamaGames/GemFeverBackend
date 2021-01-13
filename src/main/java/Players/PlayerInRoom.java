@@ -49,7 +49,7 @@ public class PlayerInRoom extends PlayerState {
 		case ChangeScene:
 			String scene = inMsg.get("id").asText();
 			boolean playing = inMsg.get("playing").asBoolean();
-			log("changeScene: " + scene + " playing: ");
+			log("changeScene: " + scene + " playing: " + playing);
 			outMsg.put("evt", FrontendEvents.ChangeScene.ordinal());
 			outMsg.put("id", scene);
 			room.changeScene(outMsg, playing);
