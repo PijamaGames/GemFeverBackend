@@ -112,7 +112,11 @@ public class Room {
 				}
 				host.inRoomState.removePlayer(client);
 			}
-			//}
+			
+			if(playing && clients.size() == 0 && host != null) {
+				host.setState(host.signedInState);
+				host.inRoomState.sendError();
+			}
 			
 			if(admitsClients()) openRooms.add(this);
 		}
