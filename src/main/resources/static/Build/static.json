@@ -1,7 +1,7 @@
 {
-"companyName": "DefaultCompany",
-"productName": "Proj",
-"productVersion": "0.1",
+"companyName": "Pijama Games",
+"productName": "Gem Fever",
+"productVersion": "1.0",
 "dataUrl": "static.data.unityweb",
 "wasmCodeUrl": "static.wasm.code.unityweb",
 "wasmFrameworkUrl": "static.wasm.framework.unityweb",
