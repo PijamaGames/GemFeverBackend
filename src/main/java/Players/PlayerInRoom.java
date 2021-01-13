@@ -48,10 +48,11 @@ public class PlayerInRoom extends PlayerState {
 			break;
 		case ChangeScene:
 			String scene = inMsg.get("id").asText();
-			log("changeScene: " + scene);
+			boolean playing = inMsg.get("playing").asBoolean();
+			log("changeScene: " + scene + " playing: ");
 			outMsg.put("evt", FrontendEvents.ChangeScene.ordinal());
 			outMsg.put("id", scene);
-			room.changeScene(outMsg, inMsg.get("playing").asBoolean());
+			room.changeScene(outMsg, playing);
 			break;
 		case SaveGems:
 			User user = player.getUser();
