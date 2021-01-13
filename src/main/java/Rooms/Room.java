@@ -114,8 +114,11 @@ public class Room {
 			}
 			
 			if(playing && clients.size() == 0 && host != null) {
+				log("Host is alone, closing room");
 				host.setState(host.signedInState);
 				host.inRoomState.sendError();
+				openRooms.remove(this);
+				playing = false;
 			}
 			
 			if(admitsClients()) openRooms.add(this);
