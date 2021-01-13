@@ -44,7 +44,7 @@ public class Room {
 	}
 	
 	public boolean admitsClients() {
-		return !playing && clients.size() < maxClients;
+		return !playing && clients.size() < maxClients && host != null;
 	}
 	
 	public void addClient(Player client) {
