@@ -113,6 +113,9 @@ public class Room {
 				host.inRoomState.removePlayer(client);
 			}
 			
+			log("playing: " + playing);
+			log("clients size: " + clients.size());
+			log("host: " + (host != null));
 			if(playing && clients.size() == 0 && host != null) {
 				log("Host is alone, closing room");
 				host.setState(host.signedInState);
