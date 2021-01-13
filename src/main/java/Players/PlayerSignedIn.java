@@ -59,7 +59,7 @@ public class PlayerSignedIn extends PlayerState {
 		outMsg.put("evt", FrontendEvents.GetRooms.ordinal());
 		ArrayNode infos = outMsg.putArray("players");
 		for(Player p : PlayerManager.players){
-			if(p.getState() == p.inRoomState) {
+			if(p.getState() == p.inRoomState && p.inRoomState.isHost) {
 				Room room = p.inRoomState.room;
 				if(room != null && room.admitsClients()) {
 					String json;
