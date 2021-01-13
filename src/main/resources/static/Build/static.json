@@ -1,0 +1,17 @@
+{
+"companyName": "Pijama Games",
+"productName": "Gem Fever",
+"productVersion": "1.0",
+"dataUrl": "static.data.unityweb",
+"wasmCodeUrl": "static.wasm.code.unityweb",
+"wasmFrameworkUrl": "static.wasm.framework.unityweb",
+"graphicsAPI": ["WebGL 2.0"],
+"webglContextAttributes": {"preserveDrawingBuffer": false},
+"backgroundUrl": "static.jpg",
+"splashScreenStyle": "Dark",
+"backgroundColor": "#FFFFFF",
+"cacheControl": {"default": "must-revalidate"},
+"developmentBuild": false,
+"multithreading": false,
+"unityVersion": "2019.4.15f1"
+}
